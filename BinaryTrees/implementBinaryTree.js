@@ -159,6 +159,23 @@ const BinaryTree = function (root = null) {
     //previous will represent the left most child, before reaching null.
     return previous.value;
   };
+
+  //pre order traversal.
+  this.compareEqualityOfTrees = function (root1, root2) {
+    if (root1 === null && root2 === null) {
+      return true;
+    }
+
+    if (root1 !== null && root2 !== null) {
+      return (
+        root1.value === root2.value &&
+        this.compareEqualityOfTrees(root1.left, root2.left) &&
+        this.compareEqualityOfTrees(root1.right, root2.right)
+      );
+    }
+    // if one is null but the other populated. then its not equal.
+    return false;
+  };
 };
 
 let newTree = new BinaryTree();
@@ -170,6 +187,17 @@ newTree.insert(26);
 newTree.insert(30);
 newTree.insert(10);
 newTree.insert(5);
+
+//Second tree
+let secondTree = new BinaryTree();
+secondTree.insert(25);
+secondTree.insert(21);
+secondTree.insert(22);
+secondTree.insert(29);
+secondTree.insert(26);
+secondTree.insert(30);
+secondTree.insert(10);
+secondTree.insert(5);
 
 /*      
 
@@ -199,4 +227,7 @@ newTree.insert(5);
 // console.log(newTree.getHeight(newTree.root));
 
 //getMin
-console.log(newTree.getMinBST(newTree.root));
+// console.log(newTree.getMinBST(newTree.root));
+
+//check two trees for equality
+// console.log(newTree.compareEqualityOfTrees(newTree.root, secondTree.root));
