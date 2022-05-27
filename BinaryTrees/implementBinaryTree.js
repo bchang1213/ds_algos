@@ -196,18 +196,37 @@ const BinaryTree = function (root = null) {
     );
   };
 
-  this.printNodeAtK = function (root, K) {
+  /**
+   * We pass in an empty array in the method signature because we want an array of answers, but this is kind of uncomfortable from a user perspective. still, it works.
+   */
+  this.printNodeAtK = function (root, K, array) {
     if (root === null) {
       return `there is no tree.`;
     }
 
     if (K === 0) {
-      console.log(root.value);
-      return;
+      array.push(root.value);
     }
 
-    this.printNodeAtK(root.left, K - 1);
-    this.printNodeAtK(root.right, K - 1);
+    this.printNodeAtK(root.left, K - 1, array);
+    this.printNodeAtK(root.right, K - 1, array);
+    return array;
+  };
+
+  /**
+   * Level order traversal or BFS
+   * pass in height method
+   */
+  this.traverseBreadthFirst = function (root, height) {
+    for (let i = 0; i <= height; i++) {
+      //each value of i represents the level that has been traversed into the given tree.
+      //so we call printNodeAtK() to print all nodes at that level.
+      let nodes = this.printNodeAtK(root, i, []);
+      for (let j = 0; j < nodes.length; j++) {
+        console.log(nodes[j]);
+      }
+    }
+    return;
   };
 };
 
@@ -271,4 +290,9 @@ secondTree.insert(5);
 // );
 
 //Print at K
-console.log(newTree.printNodeAtK(newTree.root, 2));
+// console.log(newTree.printNodeAtK(newTree.root, 2, []));
+
+//traverse Breadth First, or level order wise
+console.log(
+  newTree.traverseBreadthFirst(newTree.root, newTree.getHeight(newTree.root))
+);
