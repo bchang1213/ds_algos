@@ -228,6 +228,109 @@ const BinaryTree = function (root = null) {
     }
     return;
   };
+
+  /**
+   * calculate size of BT
+   */
+  this.size = function (root) {
+    if (root === null) {
+      return 0;
+    }
+
+    return 1 + this.size(root.left) + this.size(root.right);
+  };
+
+  /**
+   * Count number of leaves in a binary tree
+   */
+  this.countLeaves = function (root) {
+    if (root === null) {
+      return 0;
+    }
+    console.log("HERE IS ROOT:", root.value);
+    if (root.left === null && root.right === null) {
+      console.log("ONE");
+      return 1;
+    }
+
+    return this.countLeaves(root.left) + this.countLeaves(root.right);
+  };
+
+  /**
+   * return maximum value of binary search tree
+   */
+
+  this.findMax = function (root) {
+    let current = root;
+    let previous = null;
+
+    while (current !== null) {
+      previous = current;
+      current = current.right;
+    }
+
+    return previous.value;
+  };
+
+  this.findRecursively = function (root, value) {
+    if (root === null) {
+      return "not found";
+    }
+
+    if (root.value === value) {
+      return root;
+    }
+
+    if (root.value < value) {
+      return this.findRecursively(root.left, value);
+    }
+
+    if (root.value > value) {
+      return this.findRecursively(root.left, value);
+    }
+  };
+
+  this.areSibling = function (root, node1, node2) {
+    if (root === null) {
+      return false;
+    }
+
+    if (root.left === null || root.right === null) {
+      return false;
+    }
+
+    console.log(`current: ${root.value}`);
+    if (root.left.value === node1 && root.right.value === node2) {
+      console.log("HIT!");
+      return true;
+    }
+
+    if (root.left.value !== node1) {
+      return this.areSibling(root.left, node1, node2);
+    }
+
+    if (root.right.value !== node2) {
+      return this.areSibling(root.right, node1, node2);
+    }
+  };
+
+  this.getAncestors = function (root, node) {
+    if (root === null) {
+      return `No ancestors.`;
+    }
+
+    console.log("CURRENT:", root.value, ", node:", node);
+    if (root.value === node) {
+      console.log("HIT");
+      return root.value;
+    }
+    if (root.value > node) {
+      return this.getAncestors(root.left, node);
+    }
+    if (root.value < node) {
+      return this.getAncestors(root.right, node);
+    }
+  };
 };
 
 let newTree = new BinaryTree();
@@ -293,6 +396,24 @@ secondTree.insert(5);
 // console.log(newTree.printNodeAtK(newTree.root, 2, []));
 
 //traverse Breadth First, or level order wise
-console.log(
-  newTree.traverseBreadthFirst(newTree.root, newTree.getHeight(newTree.root))
-);
+// console.log(
+//   newTree.traverseBreadthFirst(newTree.root, newTree.getHeight(newTree.root))
+// );
+
+//calculate size of Binary Tree
+// console.log(newTree.size(newTree.root));
+
+//Count Leaves
+// console.log(newTree.countLeaves(newTree.root));
+
+//get max
+// console.log(newTree.findMax(newTree.root));
+
+//find Recursively
+// console.log(newTree.findRecursively(newTree.root, 10));
+
+//find sibling
+// console.log(newTree.areSibling(newTree.root, 10, 21));
+
+//get ancestors
+console.log(newTree.getAncestors(newTree.root, 10));
