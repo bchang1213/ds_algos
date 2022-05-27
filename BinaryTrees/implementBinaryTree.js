@@ -1,5 +1,5 @@
 /**
- * Implementing just a plain binary tree
+ * Implementing binary tree
  *
  */
 
@@ -176,6 +176,39 @@ const BinaryTree = function (root = null) {
     // if one is null but the other populated. then its not equal.
     return false;
   };
+
+  this.isBinarySearchTree = function (
+    root,
+    min = Number.MIN_VALUE,
+    max = Number.MAX_VALUE
+  ) {
+    if (root === null) {
+      return true;
+    }
+    console.log("STARTING VALIDATION OF:", root.value);
+    if (root.value < min || root.value > max) {
+      return false;
+    }
+
+    return (
+      this.isBinarySearchTree(root.left, min, root.value - 1) &&
+      this.isBinarySearchTree(root.right, root.value + 1, max)
+    );
+  };
+
+  this.printNodeAtK = function (root, K) {
+    if (root === null) {
+      return `there is no tree.`;
+    }
+
+    if (K === 0) {
+      console.log(root.value);
+      return;
+    }
+
+    this.printNodeAtK(root.left, K - 1);
+    this.printNodeAtK(root.right, K - 1);
+  };
 };
 
 let newTree = new BinaryTree();
@@ -231,3 +264,11 @@ secondTree.insert(5);
 
 //check two trees for equality
 // console.log(newTree.compareEqualityOfTrees(newTree.root, secondTree.root));
+
+//validate tree as a binary tree
+// console.log(
+//   newTree.isBinarySearchTree(newTree.root, Number.MIN_VALUE, Number.MAX_VALUE)
+// );
+
+//Print at K
+console.log(newTree.printNodeAtK(newTree.root, 2));
