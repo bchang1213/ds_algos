@@ -31,7 +31,6 @@ function getNodeHeight(node) {
 function setNodeHeight(node) {
   node.height =
     Math.max(getNodeHeight(root.left), getNodeHeight(root.right)) + 1;
-  return node;
 }
 
 function balanceFactor(node) {
@@ -110,11 +109,9 @@ const AVLTree = function () {
     } else if (newValue > current.value) {
       current.right = this.insert(current.right, newValue);
     }
-    current.height =
-      Math.max(getNodeHeight(current.left), getNodeHeight(current.right)) + 1;
 
-    root = balance(root);
-    return current;
+    setNodeHeight(current);
+    return balance(current);
   };
 };
 
