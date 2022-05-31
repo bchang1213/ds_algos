@@ -75,14 +75,14 @@ function balance(current) {
   if (isLeftHeavy(current)) {
     if (balanceFactor(current.left) < 0) {
       //left rotate current.left
-      leftRotate(current.left);
+      current.left = leftRotate(current.left);
     }
     //right rotate current
     return rightRotate(current);
   } else if (isRightHeavy(current)) {
     if (balanceFactor(current.right) > 0) {
       //root.right is right rotated.
-      rightRotate(current.right);
+      current.right = rightRotate(current.right);
     }
     //root is left rotated.
     return leftRotate(current);
