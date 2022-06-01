@@ -141,11 +141,15 @@ const Heap = function () {
     if (this.size === 0) {
       console.log("There are no nodes in heap. Cannot remove anything.");
     }
+
+    let root = this.data[0];
     this.data[0] = this.data[this.size - 1];
     this.data.pop();
     this.size--;
 
     this.bubbleDown();
+
+    return root;
   };
 };
 
