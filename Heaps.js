@@ -161,5 +161,6 @@ newHeap.insert(11);
 newHeap.insert(6);
 //17 is currently the root node
 //remove 17
-newHeap.remove();
+let kore = newHeap.remove();
+console.log(kore);
 console.log(newHeap);
