@@ -116,6 +116,16 @@ const Heap = function () {
     }
   };
 
+  this.bubbleDown = function () {
+    let rootIndex = 0;
+    while (rootIndex <= this.size && !this.isValidParent(rootIndex)) {
+      //bubble down
+      let largerChildIndex = this.getLargerChildIndex(rootIndex);
+      this.swap(rootIndex, largerChildIndex);
+      rootIndex = largerChildIndex;
+    }
+  };
+
   this.insert = function (value) {
     // if is full
     if (this.size < this.data.length) {
@@ -135,13 +145,7 @@ const Heap = function () {
     this.data.pop();
     this.size--;
 
-    let rootIndex = 0;
-    while (rootIndex <= this.size && !this.isValidParent(rootIndex)) {
-      //bubble down
-      let largerChildIndex = this.getLargerChildIndex(rootIndex);
-      this.swap(rootIndex, largerChildIndex);
-      rootIndex = largerChildIndex;
-    }
+    this.bubbleDown();
   };
 };
 
