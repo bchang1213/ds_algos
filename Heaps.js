@@ -69,6 +69,13 @@ const Heap = function () {
   };
 
   this.isValidParent = function (index) {
+    if (!this.hasLeftChild(index)) {
+      return true;
+    }
+
+    if (!this.hasRightChild(index)) {
+      return this.data[index] >= this.leftChild(index);
+    }
     return (
       this.data[index] >= this.leftChild(index) &&
       this.data[index] >= this.rightChild(index)
@@ -76,9 +83,25 @@ const Heap = function () {
   };
 
   this.getLargerChildIndex = function (index) {
+    if (!this.hasLeftChild(index)) {
+      return index;
+    }
+
+    if (!this.hasRightChild(index)) {
+      return this.getLeftChildIndex(index);
+    }
+
     return this.leftChild(index) > this.rightChild(index)
       ? this.getLeftChildIndex(index)
       : this.getRightChildIndex(index);
+  };
+
+  this.hasLeftChild = function (index) {
+    return this.getLeftChildIndex(index) <= this.size;
+  };
+
+  this.hasRightChild = function (index) {
+    return this.getRightChildIndex(index) <= this.size;
   };
 
   this.bubbleUp = function () {
@@ -130,5 +153,5 @@ newHeap.insert(11);
 newHeap.insert(6);
 //17 is currently the root node
 //remove 17
-newHeap.remove(17);
+newHeap.remove();
 console.log(newHeap);
