@@ -38,7 +38,7 @@
  * we can assume they wont have holes.
  */
 
-const Heap = function () {
+function Heap() {
   this.data = [];
   this.size = 0;
 
@@ -151,16 +151,105 @@ const Heap = function () {
 
     return root;
   };
+
+  this.heapifyPerLoop = function (array, index) {
+    //check if the current node is smaller than its children. if yes, swap it with its child.
+    //we check root, the left, and right child
+    //root node
+    let largerIndex = index;
+    //left child
+    let leftIndex = index * 2 + 1;
+    //right child
+    let rightIndex = index * 2 + 2;
+
+    if (leftIndex < array.length && array[leftIndex] > array[largerIndex]) {
+      largerIndex = leftIndex;
+    }
+
+    if (rightIndex < array.length && array[rightIndex] > array[largerIndex]) {
+      largerIndex = rightIndex;
+    }
+
+    //if current is greater than all its chilren
+    //recursion will eventually terminate here.
+    if (index === largerIndex) {
+      return;
+    }
+
+    this.swap(array, index, largerIndex);
+    this.heapifyPerLoop(array, largerIndex);
+  };
+
+  this.swap = function (array, first, second) {
+    let temp = array[first];
+    array[first] = array[second];
+    array[second] = temp;
+  };
+
+  //convert an array to a heap in place
+  this.heapify = function (array) {
+    /*
+      Index of last parent is
+       lastParent = (n/2) - 1
+      */
+    let lastParentIndex = array.length / 2 - 1;
+    for (let i = lastParentIndex; i >= 0; i--) {
+      this.heapifyPerLoop(array, i);
+    }
+  };
+
+  this.max = function () {
+    return this.data[0];
+  };
+  this.findKthLargestItem = function (kValue, array) {
+    //add all values from array
+    //remove k - 1 of root nodes.
+    //read the new root node for the kth largets value.
+
+    let heap = new Heap();
+
+    if (kValue < 1 || kValue > array.length) {
+      return `Error - need to provide value larger than 0 and less than array size.`;
+    }
+    for (element of array) {
+      heap.insert(element);
+    }
+
+    for (let i = 0; i < kValue - 1; i++) {
+      heap.remove();
+    }
+
+    return heap.max();
+  };
+}
+
+const PriorityQueueWithHeap = function () {
+  this.heap = new Heap();
+
+  this.enqueue = function (item) {
+    this.heap.insert(item);
+  };
+
+  this.dequeue = function () {
+    this.heap.remove();
+  };
 };
 
 const newHeap = new Heap();
-newHeap.insert(10);
-newHeap.insert(5);
-newHeap.insert(17);
-newHeap.insert(11);
-newHeap.insert(6);
-//17 is currently the root node
-//remove 17
-let kore = newHeap.remove();
-console.log(kore);
-console.log(newHeap);
+// newHeap.insert(10);
+// newHeap.insert(5);
+// newHeap.insert(17);
+// newHeap.insert(11);
+// newHeap.insert(6);
+// //17 is currently the root node
+// //remove 17
+// let kore = newHeap.remove();
+// console.log(kore);
+// console.log(newHeap);
+
+//Test heapify
+let testArray = [5, 3, 8, 4, 1, 2];
+
+newHeap.heapify(testArray);
+
+console.log(testArray);
