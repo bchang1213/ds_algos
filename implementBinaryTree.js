@@ -177,6 +177,7 @@ const BinaryTree = function (root = null) {
     return false;
   };
 
+  // O(n), space: O(n)
   this.isBinarySearchTree = function (
     root,
     min = Number.MIN_VALUE,
