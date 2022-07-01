@@ -177,7 +177,7 @@ const BinaryTree = function (root = null) {
     return false;
   };
 
-  // O(n), space: O(n)
+  // O(n), space: O(n) PRE ORDER TRAVERSAL: ROOT, LEFT RIGHT
   this.isBinarySearchTree = function (
     root,
     min = Number.MIN_VALUE,
