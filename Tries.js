@@ -136,23 +136,32 @@ const Trie = function () {
   this.autoComplete = function (prefix) {
     let words = [];
     let lastNode = this.findLastNodeOf(prefix);
-    this.findWords(root, prefix, words);
+    this.findWords(lastNode, prefix, words);
 
     return words;
   };
 
   this.findWords = function (root, prefix, wordsArray) {
-    //find the node for the last letter of the given prefix
-    if (root.isEndOfWord) {
-      words.add(prefix);
+    if (root === null) {
+      return;
     }
-
+    //if the given node "root" is the end of a word, then we can just add that prefix as a potential word.
+    //if the prefix is already the end of a word.
+    if (root.isEndOfWord) {
+      wordsArray.add(prefix);
+    }
+    //sometimes we will encounter the end of a prefix, but that prefix will still have multiple potential matches/children.
+    //iterate through all those potential children.
     for (child of Object.values(current.children)) {
+      this.findWords(child, prefix + child.value, wordsArray);
     }
   };
 
   //At the end of the for loop, the var current will equal the very last node of a trie that contains the user's prefix.
   this.findLastNodeOf = function (prefix) {
+    if (prefix === null) {
+      return null;
+    }
     let current = this.root;
     let charArray = prefix.split("");
     for (char of charArray) {
