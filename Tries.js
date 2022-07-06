@@ -9,6 +9,10 @@
  * autocomplete is a key application of tries.
  *
  * root node is always null in a trie involving the 26th letter alphabet.
+ * cost of looking up something is constant, thus tries are ideal for lookuping words
+ * Insert O{L} for length of word
+ * Lookup O(L)
+ * Delete O(L)
  */
 
 const ALPHABET_SIZE = 26;
