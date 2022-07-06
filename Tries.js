@@ -70,6 +70,35 @@ const Trie = function () {
     return true;
   };
 
+  this.containsRecursive = function (node, word, index) {
+    if (word === null) {
+      console.log("word is null");
+      return false;
+    }
+
+    let current = node;
+
+    if (index === word.length) {
+      console.log("returning true");
+      return true;
+    }
+
+    let char = word.charAt(index);
+    let child = current.children[char];
+
+    if (child === null || child === undefined) {
+      console.log("trie doesnt contain:", char);
+      return;
+    }
+
+    if (!current.children.hasOwnProperty(char)) {
+      console.log("returning false");
+      return false;
+    }
+
+    this.containsRecursive(child, word, index + 1);
+  };
+
   this.containsForLoop = function (word) {
     let current = this.root;
 
@@ -181,5 +210,7 @@ newTrie.insert("heaven");
 // newTrie.contains("hel");
 
 // newTrie.traverse(newTrie.root);
-newTrie.remove(newTrie.root, "hello", 0);
-newTrie.traverse(newTrie.root);
+// newTrie.remove(newTrie.root, "hello", 0);
+// newTrie.traverse(newTrie.root);
+
+newTrie.containsRecursive(newTrie.root, "hek", 0);
