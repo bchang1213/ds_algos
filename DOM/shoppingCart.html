@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping list example</title>
+    <style>
+      li {
+        margin-bottom: 10px;
+      }
+
+      li button {
+        font-size: 8px;
+        margin-left: 20px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>My shopping list</h1>
+
+    <div>
+      <label for="item">Enter a new item:</label>
+      <input type="text" name="item" id="item">
+      <button class="add-item">Add item</button>
+    </div>
+
+    <ul>
+
+    </ul>
+
+    <script>
+        /*
+        * Reviewing basic and slightly more modern vanilla javascript browser based DOM manipulation api.'
+        * The querySelector method supports the usage of CSS classes, so it can be smoother to use as opposed to getElementByClassName, getElementByID
+        */
+        const list = document.querySelector("ul");
+        const itemInput = document.querySelector("#item");
+        const addItemButton = document.querySelector(".add-item");
+
+        let deleteButton = null;
+
+        addItemButton.addEventListener("click", event => {
+
+            let itemValue = itemInput.value;
+
+            if (!itemValue) {
+                return;
+            }
+            let newListItem = document.createElement("li");
+            newListItem.textContent = itemValue;
+
+            let newDeleteButton = document.createElement("button");
+            newDeleteButton.textContent = "Delete";
+            newDeleteButton.setAttribute("name", "list-item-" + itemValue);
+            newDeleteButton.setAttribute("class", "delete-item");
+            newDeleteButton.addEventListener("click", event => {
+                const thisListItem =  event.target.parentNode;
+                thisListItem.remove();
+                itemInput.focus();
+            })
+
+            newListItem.appendChild(newDeleteButton);
+
+            list.appendChild(newListItem);
+            itemInput.value = null;
+            itemInput.focus();
+        });
+
+    </script>
+  </body>
+</html>
