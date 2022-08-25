@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+This HTML file is a server error page used for all errors on a website. The
+server will redirect to this page with the URL of the original error page and the
+error type as arguments when an error occurs. Assume that this page can always be
+loaded successfully. Note that some functionality in this file simply doesn't
+work.
+
+Instructions: Please perform a code review on this file for:
+* correctness
+* maintainability
+* security
+* performance
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Error Page</title>
+        <link rel="stylesheet" href="aboutNetError.css"/>
+        <link rel="icon" type="image/png" href="warning-16.png"/>
+    </head>
+
+    <body>
+        <div id="errorPageContainer">
+            <img src="error.png" alt="error icon" />
+
+            <div id="errorTitlesContainer">
+                <h1 id="et_fileNotFound" hidden>File Not Found</h1>
+                <h1 id="et_internalServerError" hidden>Internal Server Error</h1>
+                <h1 id="et_generic" hidden>Oops.</h1>
+            </div>
+
+            <div id="errorURL"></div>
+
+            <div id="errorDescriptionsContainer">
+                <div id="ed_fileNotFound" hidden>
+                    <ul>
+                        <li>Could the item have been renamed, removed, or relocated?</li>
+                        <li>Is there a spelling, capitalization, or other typographical error in the address?</li>
+                        <li>Do you have sufficient access permissions to the requested item?</li>
+                    </ul>
+                </div>
+                <div id="ed_internalServerError" hidden>Something has gone wrong. Check back later.</div>
+                <div id="ed_generic" hidden>We can't load this page for some reason.</div>
+            </div>
+
+            <div id="maintenanceMessage"></div>
+
+            <button id="errorTryAgain" onclick="ErrorPage.retryPage();">Retry</button>
+            <button id="goHome">Go home</button>
+        </div>
+    </body>
+    <script>
+        document.getElementById("goHome").addEventListener("click", console.log("clicked!"));
+        // The query string MUST be formatted like this:
+        //   ?errorCode=error&u=url
+
+        var ErrorPage = {
+            getErrorCode: function () {
+                var url = document.documentURI;
+                var error = url.search(/errorID\=/);
+                var errorUrl = url.search(/\&u\=/);
+                return decodeURIComponent(url.slice(error + 8, errorUrl));
+            },
+
+            retryPage: function(buttonEl) {
+                var url = document.documentURI;
+                var errorURL = url.search(/u\=/);
+                window.location = decodeURIComponent(url.slice(errorURL + 2));
+            },
+
+            getHomePage: function() {
+                return "/home";
+            },
+
+            goHome: function() {
+                window.location = this.getHomePage();
+            },
+
+            init: function() {
+                console.log("init");
+
+                // Check if there are any in-progress maintenance messages to show.
+                // status.example.com uses CORS to allow all origins and returns a
+                // plaintext maintenance message or an empty string.
+                var maintenanceXHR = new XMLHttpRequest();
+                maintenanceXHR.open("GET", "https://status.example.com/maintenance", false);
+                maintenanceXHR.send();
+                if (maintenanceXHR.status === 200) {
+                    document.getElementById("maintenanceMessage").textContent = maintenanceXHR.response;
+                }
+
+                var a = this.getErrorCode();
+                var errTitle;
+                var error_titles_children = document.getElementById("errorTitlesContainer").children;
+                for (var i = 1; i < 4; i++) {
+                    var eT = error_titles_children[i];
+                    console.log(eT.id);
+                    if (eT.id != "et_" + a) {
+                    continue;
+                    }
+                    errTitle = eT;
+                    break;
+                }
+
+                var errDesc;
+                var error_descs_children = document.getElementById("errorDescriptionsContainer").children;
+                for (var i = 1; i < 4; i++) {
+                    var eD = error_descs_children[i];
+                    console.log(eD.id);
+                    if (eD.id != "ed_" + a) {
+                    continue;
+                    }
+                    errDesc = eD;
+                    break;
+                }
+
+                // If it's an unknown error or there's no title or description
+                // defined, get the generic message
+                if (!errTitle || !errDesc) {
+                    for (var i = 0; i < 3; i++) {
+                     var eT = error_titles_children[i];
+                    if (eT.id != "et_generic") {
+                        continue;
+                    }
+                    errTitle = eT;
+                    break;
+                    }
+
+                    for (var i = 0; i < 3; i++) {
+                    eD = error_descs_children[i];
+                    if (eD.id != "ed_generic") {
+                        continue;
+                    }
+                    errDesc = eD;
+                    break;
+                    }
+                }
+
+                errTitle.hidden = false;
+                errDesc.hidden = false;
+                console.log(errTitle, errDesc);
+            },
+        };
+
+        window.onload = function () {
+            ErrorPage.init();
+        };
+        var url = document.documentURI;
+        var errorURL = url.search(/u\=/);
+        document.getElementById("errorURL").innerHTML = decodeURIComponent(url.slice(errorURL + 2));
+    </script>
+</html>
