@@ -1,6 +1,43 @@
 /**
  * Implementing binary tree
  *
+ * Used for: hierarchical data, databses, autocompletion, compiler, compression (jpeg, mp3)
+ * 
+ * Lookup: O(log n)
+ * Insert: O(log n)
+ * Delete: O(log n)
+ * 
+ * 
+ * 
+
+    newTree illustration
+          25
+        /    \
+      21      29
+     /  \    /  \
+    10  22  26  30
+   /
+  5
+
+  Trees are non-linear.
+
+  Breadth first or Depth First traversal.
+
+  Breadth First is also called Level Order, visiting every level as you go down the tree.
+
+  Depth First Traversal is either:
+
+  Preorder: Root, Left, Right - good for making copies of trees
+
+  In-Order: Left, Root, Right - Numbers can come out in ascending order when doing Left, Root, Right. Can reverse with switching left and right
+
+  Post Order: Left, Right, Root - Visits all leaves nodes first before going up to root. good for deleting tree as it goes from bottom up
+
+  BFS - Breadth First Search (level order)
+  Can only be done with a queue. It uses a queue when traversing so it goes through the tree as nodes are added to it.
+  As a result, it goes through the tree, level by level. This makes Breadth First Search a popular search algorithm in graphs as well.
+
+
  */
 
 const Node = function (value) {
