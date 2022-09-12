@@ -352,6 +352,20 @@ const BinaryTree = function (root = null) {
     }
   };
 
+  //Determine if binary tree is height balanced
+  // a binary tree in which left and right subtrees of every node differ in height by no more than 1.
+  this.isBalanced = function (root) {
+    if (root === null) {
+      return true;
+    }
+
+    return (
+      Math.abs(this.getHeight(root.left) - this.getHeight(root.right)) < 2 &&
+      this.isBalanced(root.left) &&
+      this.isBalanced(root.right)
+    );
+  };
+
   this.getAncestors = function (root, node) {
     if (root === null) {
       return `No ancestors.`;
