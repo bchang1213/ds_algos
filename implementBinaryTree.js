@@ -366,6 +366,25 @@ const BinaryTree = function (root = null) {
     );
   };
 
+  /*
+  switch the right sub tree w the left sub tree, switch the leaf nodes with each other.
+ ex Input: root = [4,2,7,1,3,6,9]
+  Output: [4,7,2,9,6,3,1]
+  */
+  this.invertTree = function (root) {
+    if (root === null) {
+      return null;
+    }
+
+    let left = invertTree(root.left);
+    let right = invertTree(root.right);
+
+    root.left = right;
+    root.right = left;
+
+    return root;
+  };
+
   this.getAncestors = function (root, node) {
     if (root === null) {
       return `No ancestors.`;
