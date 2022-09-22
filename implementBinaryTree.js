@@ -385,6 +385,39 @@ const BinaryTree = function (root = null) {
     return root;
   };
 
+  /*
+   * Find all paths to the leaves in a binary tree
+  given the root of a binary tree, return all root to leaf paths in any order
+
+  return an array of strings detailing the answer:
+  Input: root = [1,2,3,null,5]
+  Output: ["1->2->5","1->3"]
+   */
+  this.getLeafPaths = function (root) {
+    function findLeafPath(root, pathString, answerArray) {
+      if (root !== null) {
+        //add the current node's value to the pathString
+        pathString += root.value;
+
+        //if the current node is a leaf
+        if (root.left === null && root.right === null) {
+          answerArray.push(pathString);
+        } else {
+          pathString += "->";
+          findLeafPath(root.left, pathString, answerArray);
+          findLeafPath(root.right, pathString, answerArray);
+        }
+      }
+    }
+
+    let answer = [];
+    let pathString = "";
+
+    findLeafPath(root, pathString, answer);
+
+    return answer;
+  };
+
   this.getAncestors = function (root, node) {
     if (root === null) {
       return `No ancestors.`;
