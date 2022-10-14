@@ -39,12 +39,50 @@ const Graph = function () {
     this.label = label;
   };
 
+  // string : node
   this.nodes = new Map();
+
+  //adjacency list
+  // node: List of Nodes
+  this.adjacencyList = new Map();
 
   this.addNode = function (label) {
     let node = new Node(label);
+    //add node
     this.nodes.putIfAbsent(label, node);
+    // add entry into adjacency list as well
+    this.adjacencyList.putIfAbsent(node, []);
   };
+
+  this.removeNode = function (label) {
+    let node = nodes.get(label);
+    if (node === null) {
+      return;
+    }
+
+    //removed the connection
+    for (const [key, value] of this.adjacencyList) {
+      this.adjacencyList.get(key).remove(node);
+    }
+
+    //remove the node reference entirely from adjacency list
+    this.adjacencyList.remove(node);
+    //remove from graph
+    this.nodes.remove(node);
+  };
+
+  this.removeEdge = function (from, to) {
+    let fromNode = nodes.get(from);
+    let toNode = nodes.get(to);
+
+    if (fromNode === null || toNode === null) {
+      return;
+    }
+
+    this.adjacencyList.get(fromNode).remove(toNode);
+  };
+
+  print();
 
   this.addEdge = function (from, to) {
     let fromNode = nodes.get(from);
@@ -56,6 +94,21 @@ const Graph = function () {
     let toNode = nodes.get(to);
     if (toNode === null) {
       console.log("There is no to node.");
+    }
+
+    //just adding this one relationship is a unidrected graph
+    this.adjacencyList.get(fromNode).add(toNode);
+    //adding this line also makes it a non directed graph, we nede to add the inverse relationship
+    // this.adjacencyList.get(toNode).add(fromNode);
+  };
+
+  this.print = function () {
+    for (const [key, value] of this.adjacencyList) {
+      let targets = this.adjacencyList.get(key);
+      //if there is a value
+      if (!targets.isEmpty()) {
+        console.log(`${key} is connected to ${target}`);
+      }
     }
   };
 };
